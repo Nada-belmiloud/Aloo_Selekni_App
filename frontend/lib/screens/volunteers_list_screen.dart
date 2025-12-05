@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../widgets/custom_bottom_navbar.dart';
+
 
 class VolunteersListScreen extends StatefulWidget {
   final String? wilaya;
@@ -162,49 +164,17 @@ class _VolunteersListScreenState extends State<VolunteersListScreen> {
                     const SizedBox(height: 25),
 
                     // Emergency Button
-                    Column(
-                      children: [
-                        Container(
-                          width: 70,
-                          height: 70,
-                          decoration: BoxDecoration(
-                            color: Colors.red[400],
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.red.withOpacity(0.3),
-                                blurRadius: 15,
-                                spreadRadius: 5,
-                              ),
-                            ],
-                          ),
-                          child: ClipOval(
-                            child: Image.asset(
-                              'assets/images/Button.png',
-                              width: 35,
-                              height: 35,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        const Text(
-                          'راك في خطر؟ محتاج نجدة؟',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Color.fromARGB(255, 12, 12, 12),
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textDirection: TextDirection.rtl,
-                        ),
-                      ],
-                    ),
+                   
                   ],
                 ),
               ),
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: const CustomBottomNavBar(
+        // optional: handle emergency button
+        // onEmergencyTap: () { ... },
       ),
     );
   }

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'volunteers_list_screen.dart';
+import '../widgets/custom_bottom_navbar.dart';
+
+
 
 class NeedHelpScreen extends StatefulWidget {
   const NeedHelpScreen({Key? key}) : super(key: key);
@@ -92,7 +95,7 @@ class _NeedHelpScreenState extends State<NeedHelpScreen> {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/map.png'),
+                image: AssetImage('assets/images/map.jpg'),
                 fit: BoxFit.cover,
               ),
               color: Color(0xFFE8E8E8),
@@ -103,68 +106,10 @@ class _NeedHelpScreenState extends State<NeedHelpScreen> {
           ),
 
           // Top location bar with back button
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Row(
-  textDirection: TextDirection.rtl, // ensures arrow is on the right
-  children: [
-    Expanded(
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 12,
-        ),
-        decoration: BoxDecoration(
-          color: const Color(0xFF5B9FCA),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text(
-              wilaya ?? (locationEnabled ? 'موقعك الحالي' : 'الموقع'),
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(width: 10),
-            const Icon(Icons.location_on, color: Colors.white),
-          ],
-        ),
-      ),
-    ),
-    IconButton(
-      icon: const Icon(
-        Icons.arrow_forward, // arrow points right
-        color: Color.fromARGB(255, 16, 16, 16),
-      ),
-      onPressed: () => Navigator.pop(context),
-    ),
-  ],
-)
+          // Custom header at the top
 
-                ),
-              ),
-            ),
-          ),
+
+
 
           // Volunteer Card - Shows at TOP when location is enabled
           if (locationEnabled && wilaya != null)
@@ -397,49 +342,11 @@ class _NeedHelpScreenState extends State<NeedHelpScreen> {
             ),
 
           // Emergency button at bottom
-          Positioned(
-            bottom: 20,
-            left: 0,
-            right: 0,
-            child: Column(
-              children: [
-                Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    color: Colors.red[400],
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.red.withOpacity(0.3),
-                        blurRadius: 15,
-                        spreadRadius: 5,
-                      ),
-                    ],
-                  ),
-                  child: ClipOval(
-                    child: Image.asset(
-                      'assets/images/Button.png',
-                      width: 35,
-                      height: 35,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  'راك في خطر؟ محتاج نجدة؟',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Color.fromARGB(255, 12, 12, 12),
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textDirection: TextDirection.rtl,
-                ),
-              ],
-            ),
-          ),
-        ],
+        ]
+      ),
+       bottomNavigationBar: const CustomBottomNavBar(
+        // optional: handle emergency button
+        // onEmergencyTap: () { ... },
       ),
     );
   }

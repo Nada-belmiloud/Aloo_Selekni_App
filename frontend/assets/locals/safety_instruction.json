@@ -1,0 +1,362 @@
+{
+  "fire": {
+    "title": {
+      "en": "Fire",
+      "fr": "Feu",
+      "ar": "حريق"
+    },
+    "instructions": {
+      "en": [
+        "Exit the building immediately following the evacuation route",
+        "Do not try to extinguish a large fire yourself - call the fire department",
+        "If there is smoke, crawl on the ground where the air is cleaner",
+        "Close doors behind you to slow the spread of fire",
+        "Never use the elevator - use stairs only",
+        "Check doors before opening - if hot, do not open",
+        "Go to the designated assembly point and do not return to the building"
+      ],
+      "fr": [
+        "Sortez immédiatement du bâtiment en suivant l'itinéraire d'évacuation",
+        "Ne tentez pas d'éteindre un grand incendie vous-même - appelez les pompiers",
+        "S'il y a de la fumée, rampez au sol où l'air est plus propre",
+        "Fermez les portes derrière vous pour ralentir la propagation du feu",
+        "N'utilisez jamais l'ascenseur - utilisez uniquement les escaliers",
+        "Vérifiez les portes avant de les ouvrir - si elles sont chaudes, n'ouvrez pas",
+        "Rendez-vous au point de rassemblement désigné et ne retournez pas dans le bâtiment"
+      ],
+      "ar": [
+        "اخرج من المبنى فوراً واتبع مسار الإخلاء المحدد",
+        "لا تحاول إطفاء حريق كبير بنفسك - اتصل بالإطفاء",
+        "إذا كان هناك دخان، ازحف على الأرض حيث الهواء أنظف",
+        "أغلق الأبواب خلفك لإبطاء انتشار النار",
+        "لا تستخدم المصعد أبداً - استخدم السلالم فقط",
+        "تحسس الأبواب قبل فتحها - إذا كانت ساخنة لا تفتحها",
+        "اتجه إلى نقطة التجمع المحددة ولا تعد إلى المبنى"
+      ]
+    }
+  },
+  "car_accident": {
+    "title": {
+      "en": "Car Accident",
+      "fr": "Accident de voiture",
+      "ar": "حادث مروري"
+    },
+    "instructions": {
+      "en": [
+        "Stop the car in a safe place away from traffic",
+        "Turn on hazard lights and put the reflective triangle behind the car",
+        "Do not move injured persons unless in serious danger",
+        "Call ambulance and police immediately",
+        "Stay calm and do not argue with the other party",
+        "Document the accident with photos and exchange information",
+        "Wait for authorities to arrive, do not leave the scene"
+      ],
+      "fr": [
+        "Arrêtez la voiture dans un endroit sûr loin de la circulation",
+        "Allumez les feux de détresse et placez le triangle réfléchissant derrière la voiture",
+        "Ne déplacez pas les blessés sauf en cas de danger grave",
+        "Appelez immédiatement les ambulances et la police",
+        "Restez calme et ne vous disputez pas avec l'autre partie",
+        "Documentez l'accident avec des photos et échangez des informations",
+        "Attendez l'arrivée des autorités, ne quittez pas les lieux"
+      ],
+      "ar": [
+        "أوقف السيارة في مكان آمن بعيداً عن حركة المرور",
+        "شغّل أضواء التحذير وضع المثلث العاكس خلف السيارة",
+        "لا تحرك المصابين إلا في حالة خطر شديد",
+        "اتصل بالإسعاف والشرطة فوراً",
+        "ابق هادئاً ولا تتشاجر مع الطرف الآخر",
+        "وثق الحادث بالصور وتبادل المعلومات مع الطرف الآخر",
+        "انتظر وصول الجهات المختصة ولا تغادر موقع الحادث"
+      ]
+    }
+  },
+  "earthquake": {
+    "title": {
+      "en": "Earthquake",
+      "fr": "Tremblement de terre",
+      "ar": "زلزال"
+    },
+    "instructions": {
+      "en": [
+        "Lie on the ground, take cover under a sturdy table, and hold on",
+        "Stay away from windows, mirrors, and objects that may fall",
+        "If outdoors, move away from buildings, trees, and power lines",
+        "Do not use elevators, stay where you are until shaking stops",
+        "If in a car, stop in a safe place and stay inside",
+        "Protect your head and neck with your hands or a cushion",
+        "Be prepared for aftershocks"
+      ],
+      "fr": [
+        "Allongez-vous par terre, abritez-vous sous une table solide et tenez-vous",
+        "Éloignez-vous des fenêtres, miroirs et objets susceptibles de tomber",
+        "Si vous êtes à l'extérieur, éloignez-vous des bâtiments, arbres et lignes électriques",
+        "N'utilisez pas les ascenseurs, restez où vous êtes jusqu'à ce que les secousses cessent",
+        "Si vous êtes en voiture, arrêtez-vous dans un endroit sûr et restez à l'intérieur",
+        "Protégez votre tête et votre cou avec vos mains ou un coussin",
+        "Préparez-vous aux répliques"
+      ],
+      "ar": [
+        "انبطح على الأرض، احتمِ تحت طاولة قوية، وتمسك بها",
+        "ابتعد عن النوافذ والمرايا والأشياء التي قد تسقط",
+        "إذا كنت بالخارج، ابتعد عن المباني والأشجار وخطوط الكهرباء",
+        "لا تستخدم المصاعد وابق حيث أنت حتى يتوقف الاهتزاز",
+        "إذا كنت في السيارة، أوقفها في مكان آمن وابق بداخلها",
+        "احمِ رأسك ورقبتك بيديك أو وسادة",
+        "كن مستعداً للهزات الارتدادية"
+      ]
+    }
+  },
+  "flood": {
+    "title": {
+      "en": "Flood",
+      "fr": "Inondation",
+      "ar": "فيضان"
+    },
+    "instructions": {
+      "en": [
+        "Go to the highest point of the building immediately",
+        "Do not walk or drive in flowing water - 15cm can sweep you away",
+        "Stay away from exposed electrical wires",
+        "Turn off electricity and gas if possible",
+        "Do not drink flood water - it may be contaminated",
+        "Listen to authorities and follow evacuation orders",
+        "Take an emergency bag and important documents with you"
+      ],
+      "fr": [
+        "Montez immédiatement au point le plus haut du bâtiment",
+        "Ne marchez pas et ne conduisez pas dans l'eau courante - 15cm peuvent vous emporter",
+        "Éloignez-vous des fils électriques exposés",
+        "Coupez l'électricité et le gaz si possible",
+        "Ne buvez pas l'eau de l'inondation - elle peut être contaminée",
+        "Écoutez les autorités et suivez les ordres d'évacuation",
+        "Prenez un sac d'urgence et des documents importants"
+      ],
+      "ar": [
+        "اصعد فوراً إلى أعلى نقطة في المبنى",
+        "لا تمشِ أو تقود في المياه المتدفقة - 15 سم قد تسقطك",
+        "ابتعد عن الأسلاك الكهربائية المكشوفة",
+        "أوقف مصادر الكهرباء والغاز إذا أمكن",
+        "لا تشرب من مياه الفيضان - قد تكون ملوثة",
+        "استمع لتعليمات السلطات واتبع أوامر الإخلاء",
+        "خذ معك حقيبة الطوارئ والوثائق المهمة"
+      ]
+    }
+  },
+  "building_collapse": {
+    "title": {
+      "en": "Building Collapse",
+      "fr": "Effondrement de bâtiment",
+      "ar": "انهيار مبنى"
+    },
+    "instructions": {
+      "en": [
+        "Evacuate immediately if you feel shaking or hear strange sounds",
+        "Do not use elevators - use stairs only",
+        "Protect your head and neck with your hands or a bag",
+        "Move away from the building to a safe distance",
+        "Do not try to rescue anyone - leave it to professionals",
+        "Call emergency services immediately",
+        "Warn others to stay away from the building"
+      ],
+      "fr": [
+        "Évacuez immédiatement si vous sentez des secousses ou entendez des sons étranges",
+        "N'utilisez pas les ascenseurs - utilisez uniquement les escaliers",
+        "Protégez votre tête et votre cou avec vos mains ou un sac",
+        "Éloignez-vous du bâtiment à une distance sûre",
+        "Ne tentez pas de sauver quelqu'un - laissez cela aux professionnels",
+        "Appelez immédiatement les services d'urgence",
+        "Avertissez les autres de rester éloignés du bâtiment"
+      ],
+      "ar": [
+        "أخلِ المبنى فوراً إذا شعرت بأي اهتزاز أو سمعت أصواتاً غريبة",
+        "لا تستخدم المصاعد - استخدم السلالم فقط",
+        "احمِ رأسك ورقبتك بيديك أو حقيبة",
+        "ابتعد عن المبنى إلى مسافة آمنة",
+        "لا تحاول الدخول لإنقاذ أحد - اترك ذلك للمختصين",
+        "اتصل بخدمات الطوارئ فوراً",
+        "حذر الآخرين من الاقتراب من المبنى"
+      ]
+    }
+  },
+  "electric_accident": {
+    "title": {
+      "en": "Electric Accident",
+      "fr": "Accident électrique",
+      "ar": "حادث كهربائي"
+    },
+    "instructions": {
+      "en": [
+        "Do not touch the victim directly - you may get shocked too",
+        "Disconnect the power source from the main switch",
+        "Use a dry wooden stick to move the wire away from the victim",
+        "Stand on a dry insulating surface (rubber, wood)",
+        "Do not use water to extinguish an electrical fire",
+        "Call ambulance immediately",
+        "Start CPR if breathing stops"
+      ],
+      "fr": [
+        "Ne touchez pas la victime directement - vous pourriez recevoir un choc également",
+        "Déconnectez la source d'alimentation depuis l'interrupteur principal",
+        "Utilisez un bâton sec en bois pour éloigner le fil de la victime",
+        "Tenez-vous sur une surface sèche isolante (caoutchouc, bois)",
+        "N'utilisez pas d'eau pour éteindre un incendie électrique",
+        "Appelez immédiatement une ambulance",
+        "Commencez la RCR si la respiration s'arrête"
+      ],
+      "ar": [
+        "لا تلمس الشخص المصاب مباشرة - قد تُصعق أنت أيضاً",
+        "افصل مصدر الكهرباء من القاطع الرئيسي",
+        "استخدم عصا خشبية جافة لإبعاد السلك عن المصاب",
+        "قف على سطح جاف وعازل (مطاط، خشب)",
+        "لا تستخدم الماء لإطفاء حريق كهربائي",
+        "اتصل بالإسعاف فوراً",
+        "ابدأ الإنعاش القلبي الرئوي إذا توقف التنفس"
+      ]
+    }
+  },
+  "injuries": {
+    "title": {
+      "en": "Injuries",
+      "fr": "Blessures",
+      "ar": "إصابات"
+    },
+    "instructions": {
+      "en": [
+        "Assess the situation and ensure safety before approaching",
+        "Call ambulance for serious injuries",
+        "Do not move the injured if spinal injury is suspected",
+        "Apply direct pressure on bleeding wounds with a clean cloth",
+        "Keep the injured person warm and comfortable",
+        "Immobilize fractures before moving",
+        "Monitor vital signs until help arrives"
+      ],
+      "fr": [
+        "Évaluez la situation et assurez-vous de la sécurité avant d'approcher",
+        "Appelez une ambulance pour les blessures graves",
+        "Ne déplacez pas la personne blessée si une blessure à la colonne vertébrale est suspectée",
+        "Appliquez une pression directe sur les plaies saignantes avec un chiffon propre",
+        "Gardez la personne blessée au chaud et à l'aise",
+        "Immobilisez les fractures avant de bouger",
+        "Surveillez les signes vitaux jusqu'à l'arrivée de l'aide"
+      ],
+      "ar": [
+        "قيّم الموقف وتأكد من سلامة المكان قبل الاقتراب",
+        "اتصل بالإسعاف للإصابات الخطيرة",
+        "لا تحرك المصاب إذا اشتبهت بإصابة العمود الفقري",
+        "اضغط مباشرة على الجروح النازفة بقماش نظيف",
+        "حافظ على المصاب دافئاً ومرتاحاً",
+        "ثبّت الكسور قبل أي تحريك",
+        "راقب العلامات الحيوية حتى وصول المساعدة"
+      ]
+    }
+  },
+  "drowning": {
+    "title": {
+      "en": "Drowning",
+      "fr": "Noyade",
+      "ar": "غرق"
+    },
+    "instructions": {
+      "en": [
+        "Call ambulance immediately",
+        "Remove the person from water safely - extend a stick or rope",
+        "Do not jump into water to rescue unless trained",
+        "Check breathing and pulse immediately after rescue",
+        "Start CPR if not breathing",
+        "Place the person on their side if unconscious but breathing",
+        "Keep the victim warm with blankets"
+      ],
+      "fr": [
+        "Appelez immédiatement une ambulance",
+        "Sortez la personne de l'eau en toute sécurité - tendez un bâton ou une corde",
+        "Ne sautez pas dans l'eau pour secourir sauf si formé",
+        "Vérifiez la respiration et le pouls immédiatement après le sauvetage",
+        "Commencez la RCR si la personne ne respire pas",
+        "Placez la personne sur le côté si elle est inconsciente mais respire",
+        "Gardez la victime au chaud avec des couvertures"
+      ],
+      "ar": [
+        "اتصل بالإسعاف فوراً",
+        "أخرج الشخص من الماء بأمان - مدّ له عصا أو حبل",
+        "لا تقفز في الماء للإنقاذ إلا إذا كنت مدرباً",
+        "افحص التنفس والنبض فور إخراجه",
+        "ابدأ الإنعاش القلبي الرئوي إذا لم يتنفس",
+        "ضع الشخص على جانبه إذا كان يتنفس ولكنه فاقد للوعي",
+        "حافظ على دفء المصاب بأغطية"
+      ]
+    }
+  },
+  "poisoning": {
+    "title": {
+      "en": "Poisoning",
+      "fr": "Empoisonnement",
+      "ar": "تسمم"
+    },
+    "instructions": {
+      "en": [
+        "Call the poison center or ambulance immediately",
+        "Identify the toxic substance and quantity if possible",
+        "Do not force the victim to vomit without medical advice",
+        "Move the victim away from the source of poisoning",
+        "If inhalation poisoning, move victim to fresh air",
+        "Keep a sample of the suspected substance",
+        "Monitor breathing and consciousness until help arrives"
+      ],
+      "fr": [
+        "Appelez immédiatement le centre anti-poison ou une ambulance",
+        "Identifiez la substance toxique et la quantité si possible",
+        "Ne forcez pas la victime à vomir sans avis médical",
+        "Éloignez la victime de la source d'empoisonnement",
+        "En cas d'empoisonnement par inhalation, déplacez la victime à l'air frais",
+        "Conservez un échantillon de la substance suspecte",
+        "Surveillez la respiration et la conscience jusqu'à l'arrivée de l'aide"
+      ],
+      "ar": [
+        "اتصل بمركز السموم أو الإسعاف فوراً",
+        "حدد نوع المادة السامة وكميتها إن أمكن",
+        "لا تجبر المصاب على التقيؤ دون استشارة طبية",
+        "أبعد المصاب عن مصدر التسمم",
+        "إذا كان التسمم بالاستنشاق، انقل المصاب للهواء الطلق",
+        "احتفظ بعينة من المادة المشتبه بها",
+        "راقب التنفس والوعي حتى وصول المساعدة"
+      ]
+    }
+  },
+  "suffocation": {
+    "title": {
+      "en": "Suffocation",
+      "fr": "Asphyxie",
+      "ar": "اختناق"
+    },
+    "instructions": {
+      "en": [
+        "Ask the person: 'Are you choking?' If yes, help immediately",
+        "Stand behind the person and place your fist above the navel",
+        "Perform quick upward abdominal thrusts (Heimlich maneuver)",
+        "Repeat thrusts 5 times or until object is expelled",
+        "For infants: turn face down and give 5 back blows",
+        "If unconscious, start CPR",
+        "Call ambulance immediately"
+      ],
+      "fr": [
+        "Demandez à la personne : 'Êtes-vous étouffé ?' Si oui, aidez immédiatement",
+        "Tenez-vous derrière la personne et placez votre poing au-dessus du nombril",
+        "Effectuez des poussées abdominales rapides vers le haut (manœuvre de Heimlich)",
+        "Répétez les poussées 5 fois ou jusqu'à expulsion de l'objet",
+        "Pour les nourrissons : placez-le face vers le bas et donnez 5 tapes dans le dos",
+        "Si inconscient, commencez la RCR",
+        "Appelez immédiatement une ambulance"
+      ],
+      "ar": [
+        "اسأل الشخص: 'هل أنت مختنق؟' إذا أومأ برأسه، ساعده فوراً",
+        "قف خلف الشخص وضع قبضتك فوق السرة",
+        "اضغط بقوة وبسرعة نحو الداخل والأعلى (مناورة هيمليك)",
+        "كرر الضغط 5 مرات أو حتى يخرج الجسم الغريب",
+        "للرضع: اقلبه على وجهه واضرب ظهره 5 مرات",
+        "إذا فقد الوعي، ابدأ الإنعاش القلبي الرئوي",
+        "اتصل بالإسعاف فوراً"
+      ]
+    }
+  }
+}

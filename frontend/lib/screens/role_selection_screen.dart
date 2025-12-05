@@ -2,46 +2,105 @@ import 'package:flutter/material.dart';
 import 'need_help_screen.dart';
 import 'register_screen.dart';
 import 'explore_screen.dart';
+import '../widgets/custom_bottom_navbar.dart';
+import '../widgets/explore_card.dart';
+
 
 class RoleSelectionScreen extends StatelessWidget {
   const RoleSelectionScreen({Key? key}) : super(key: key);
 
+  
+
   @override
   Widget build(BuildContext context) {
+    
+    const double headerHeight = 170.0;
+
     return Scaffold(
-      backgroundColor: const Color(0xFF4A8BB3),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF4A8BB3),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
+      
+      backgroundColor: const Color(0xFFF5F5F5),
+      appBar: null,
+
       body: Stack(
         children: [
-          // Blue background section
-          Column(
-            children: [
-              // Title
-              const Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text(
-                  'واش راك حاب تدير؟',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 16, 16, 16),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Expanded(child: Container()),
-            ],
-          ),
-          // White container with cards
+         
           Positioned(
-            top: 170,
+            top: 0, 
+            left: 0,
+            right: 0,
+            height: headerHeight +
+                70, 
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                
+                Image.asset(
+                
+                  'assets/images/help (1).jpg',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                  
+                    return Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            const Color(0xFF4A8BB3),
+                            const Color(0xFF4A8BB3).withOpacity(0.7),
+                          ],
+                        ),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'Header Image Missing',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+
+              
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        
+                        const Color.fromARGB(255, 71, 72, 73).withOpacity(0.5),
+                        // End in full transparency to blend smoothly with the white container
+                        const Color.fromARGB(255, 17, 17, 18).withOpacity(0.0),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 40,
+            left: 0,
+            right: 0,
+            child: const Padding(
+              padding: EdgeInsets.only(bottom: 10.0),
+              child: Text(
+                'واش راك حاب تدير؟',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+
+          Positioned(
+            top: 300,
             left: 0,
             right: 0,
             bottom: 0,
@@ -51,9 +110,9 @@ class RoleSelectionScreen extends StatelessWidget {
               ),
             ),
           ),
-          // Cards overlaying the blue section
+
           Positioned(
-            top: 130,
+            top: 210,
             left: 20,
             right: 20,
             bottom: 0,
@@ -61,10 +120,10 @@ class RoleSelectionScreen extends StatelessWidget {
               child: Column(
                 children: [
                   // Need Help Card
-                  _buildRoleCard(
-                    context,
-                    title: 'اختر اقرب مسعف',
-                    imagePath: 'assets/images/ambulance.png', 
+                  
+                  ExploreCard(
+                    title:'اختر اقرب مسعف',
+                    imagePath: 'assets/images/ambulance.png',
                     onTap: () {
                       Navigator.push(
                         context,
@@ -74,12 +133,13 @@ class RoleSelectionScreen extends StatelessWidget {
                       );
                     },
                   ),
-                  const SizedBox(height: 10),
+                  
+                  const SizedBox(height: 30),
                   // Volunteer Card
-                  _buildRoleCard(
-                    context,
-                    title: 'حاب نتطوع !',
-                    imagePath: 'assets/images/volunteer.png', 
+                  
+                  ExploreCard(
+                    title:'حاب نتطوع  !',
+                    imagePath: 'assets/images/volunteer.png',
                     onTap: () {
                       Navigator.push(
                         context,
@@ -89,12 +149,12 @@ class RoleSelectionScreen extends StatelessWidget {
                       );
                     },
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 30),
                   // Explore Card
-                  _buildRoleCard(
-                    context,
-                    title: 'استكشاف',
-                    imagePath: 'assets/images/explore.png', // Replace with your image path
+                 
+                  ExploreCard(
+                    title:'استكشاف',
+                    imagePath: 'assets/images/explore.png',
                     onTap: () {
                       Navigator.push(
                         context,
@@ -104,120 +164,17 @@ class RoleSelectionScreen extends StatelessWidget {
                       );
                     },
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 20),
                   // Emergency Button with Image
-                  Image.asset(
-                    'assets/images/Button.png', // Replace with your button image path
-                    width: 80,
-                    height: 80,
-                    errorBuilder: (context, error, stackTrace) {
-                      // Fallback if image not found
-                      return Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.red[400],
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.red.withOpacity(0.3),
-                              blurRadius: 15,
-                              spreadRadius: 5,
-                            ),
-                          ],
-                        ),
-                        child: const Icon(
-                          Icons.phone,
-                          color: Colors.white,
-                          size: 40,
-                        ),
-                      );
-                    },
-                  ),
-                 
-                  const Text(
-                    'راك في خطر؟ محتاج نجدة؟',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Color.fromARGB(255, 12, 12, 12),
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textDirection: TextDirection.rtl,
-                  ),
-                  const SizedBox(height: 10),
                 ],
               ),
             ),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildRoleCard(
-    BuildContext context, {
-    required String title,
-    required String imagePath,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(15),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          textDirection: TextDirection.rtl,
-          children: [
-            // Image on the right
-            Image.asset(
-              imagePath,
-              width: 70,
-              height: 70,
-              errorBuilder: (context, error, stackTrace) {
-                // Fallback to icon if image not found
-                return Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(
-                    Icons.image,
-                    color: Colors.red,
-                    size: 35,
-                  ),
-                );
-              },
-            ),
-            // Text in the center
-            Expanded(
-              child: Center(
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black87,
-                  ),
-                  textDirection: TextDirection.rtl,
-                ),
-              ),
-            ),
-          ],
-        ),
+      bottomNavigationBar: const CustomBottomNavBar(
+        // optional: handle emergency button
+        // onEmergencyTap: () { ... },
       ),
     );
   }

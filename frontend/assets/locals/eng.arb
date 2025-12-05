@@ -1,0 +1,107 @@
+{
+  "@@locale": "en",
+  "titles": {
+    "fire": "Fire",
+    "traffic_accident": "Traffic accident",
+    "earthquake": "Earthquake",
+    "flood": "Flood",
+    "building_collapse": "Building collapse",
+    "electrical_accident": "Electrical accident",
+    "injuries": "Injuries",
+    "drowning": "Drowning",
+    "poisoning": "Poisoning",
+    "choking": "Choking"
+  },
+  "instructions": {
+    "fire": [
+      "Get out of the building immediately and follow the designated evacuation route",
+      "Do not try to extinguish a large fire yourself — call the fire department",
+      "If there is smoke, crawl on the floor where the air is cleaner",
+      "Close doors behind you to slow the spread of fire",
+      "Never use elevators — use stairs only",
+      "Check doors before opening them — if hot, do not open",
+      "Go to the assembly point and do not re-enter the building"
+    ],
+    "traffic_accident": [
+      "Stop the car in a safe place away from traffic",
+      "Turn on hazard lights and place a warning triangle behind the car",
+      "Do not move injured people unless there is an immediate danger",
+      "Call ambulance and police immediately",
+      "Stay calm and avoid arguing with the other party",
+      "Document the accident with photos and exchange information",
+      "Wait for the authorities and do not leave the scene"
+    ],
+    "earthquake": [
+      "Drop to the ground, take cover under a sturdy table, and hold on",
+      "Stay away from windows, mirrors, and items that may fall",
+      "If outside, move away from buildings, trees and power lines",
+      "Do not use elevators and remain where you are until shaking stops",
+      "If in a car, stop in a safe place and stay inside",
+      "Protect your head and neck with your hands or a cushion",
+      "Be prepared for aftershocks"
+    ],
+    "flood": [
+      "Move to the highest point in the building immediately",
+      "Do not walk or drive through flowing water — 15 cm can knock you down",
+      "Keep away from exposed electrical wires",
+      "Turn off electricity and gas sources if possible",
+      "Do not drink flood water — it may be contaminated",
+      "Follow authorities' instructions and evacuation orders",
+      "Take an emergency bag and important documents with you"
+    ],
+    "building_collapse": [
+      "Evacuate the building immediately if you feel shaking or hear unusual noises",
+      "Do not use elevators — use stairs only",
+      "Protect your head and neck with your hands or a bag",
+      "Move away from the building to a safe distance",
+      "Do not try to enter to rescue anyone — leave that to professionals",
+      "Call emergency services immediately",
+      "Warn others to stay away from the building"
+    ],
+    "electrical_accident": [
+      "Do not touch the injured person directly — you may be electrocuted too",
+      "Turn off the power at the main breaker",
+      "Use a dry wooden stick to move the wire away from the victim",
+      "Stand on a dry insulating surface (rubber, wood)",
+      "Do not use water to extinguish an electrical fire",
+      "Call an ambulance immediately",
+      "Start CPR if breathing has stopped"
+    ],
+    "injuries": [
+      "Assess the situation and ensure the area is safe before approaching",
+      "Call an ambulance for serious injuries",
+      "Do not move the injured person if spinal injury is suspected",
+      "Apply direct pressure to bleeding wounds with clean cloth",
+      "Keep the injured person warm and comfortable",
+      "Immobilize fractures before moving",
+      "Monitor vital signs until help arrives"
+    ],
+    "drowning": [
+      "Call an ambulance immediately",
+      "Safely remove the person from the water — extend a stick or rope",
+      "Do not jump in to rescue unless you are trained",
+      "Check breathing and pulse as soon as they are out",
+      "Start CPR if they are not breathing",
+      "Place the person on their side if they are breathing but unconscious",
+      "Keep the victim warm with blankets"
+    ],
+    "poisoning": [
+      "Call the poison control center or emergency services immediately",
+      "Identify the substance and approximate amount if possible",
+      "Do not induce vomiting unless instructed by medical professionals",
+      "Move the person away from the source of poisoning",
+      "If inhalation poisoning, move the person to fresh air",
+      "Keep a sample of the suspected substance",
+      "Monitor breathing and consciousness until help arrives"
+    ],
+    "choking": [
+      "Ask the person: \"Are you choking?\" If they nod, help immediately",
+      "Stand behind the person and place your fist above the navel",
+      "Perform firm, quick inward and upward abdominal thrusts (Heimlich maneuver)",
+      "Repeat up to 5 times or until the foreign body comes out",
+      "For infants: place face down and give 5 back blows",
+      "If unconscious, start CPR",
+      "Call emergency services immediately"
+    ]
+  }
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'register_screen.dart';
 import 'profile_screen.dart';
+import '../widgets/custom_bottom_navbar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -209,6 +210,10 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: const CustomBottomNavBar(
+        // optional: handle emergency button
+        // onEmergencyTap: () { ... },
       ),
     );
   }

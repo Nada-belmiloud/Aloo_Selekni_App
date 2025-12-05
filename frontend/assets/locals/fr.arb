@@ -1,0 +1,107 @@
+{
+  "@@locale": "fr",
+  "titles": {
+    "fire": "Incendie",
+    "traffic_accident": "Accident de la route",
+    "earthquake": "Tremblement de terre",
+    "flood": "Inondation",
+    "building_collapse": "Effondrement de bâtiment",
+    "electrical_accident": "Accident électrique",
+    "injuries": "Blessures",
+    "drowning": "Noyade",
+    "poisoning": "Intoxication",
+    "choking": "Étouffement"
+  },
+  "instructions": {
+    "fire": [
+      "Sortez du bâtiment immédiatement et suivez l'itinéraire d'évacuation désigné",
+      "N'essayez pas d'éteindre un grand feu vous-même — appelez les pompiers",
+      "S'il y a de la fumée, rampez au sol où l'air est plus propre",
+      "Fermez les portes derrière vous pour ralentir la propagation du feu",
+      "N'utilisez jamais les ascenseurs — utilisez uniquement les escaliers",
+      "Touchez les portes avant de les ouvrir — si elles sont chaudes, n'ouvrez pas",
+      "Rendez-vous au point de rassemblement et ne réintégrez pas le bâtiment"
+    ],
+    "traffic_accident": [
+      "Garez la voiture dans un endroit sûr, à l'écart de la circulation",
+      "Allumez les feux de détresse et placez un triangle de signalisation derrière la voiture",
+      "Ne déplacez pas les blessés sauf en cas de danger immédiat",
+      "Appelez les secours et la police immédiatement",
+      "Restez calme et évitez de vous disputer avec l'autre partie",
+      "Documentez l'accident par des photos et échangez les informations",
+      "Attendez l'arrivée des autorités et ne quittez pas les lieux"
+    ],
+    "earthquake": [
+      "Baissez-vous, abritez-vous sous une table solide et tenez-vous",
+      "Éloignez-vous des fenêtres, miroirs et objets susceptibles de tomber",
+      "Si vous êtes dehors, éloignez-vous des bâtiments, arbres et lignes électriques",
+      "N'utilisez pas les ascenseurs et restez où vous êtes jusqu'à la fin des secousses",
+      "Si vous êtes en voiture, arrêtez-vous dans un endroit sûr et restez à l'intérieur",
+      "Protégez votre tête et votre cou avec vos mains ou un coussin",
+      "Préparez-vous aux répliques"
+    ],
+    "flood": [
+      "Montez immédiatement au point le plus élevé du bâtiment",
+      "Ne marchez pas et ne conduisez pas dans l'eau qui coule — 15 cm peuvent vous renverser",
+      "Éloignez-vous des fils électriques exposés",
+      "Coupez l'électricité et le gaz si possible",
+      "Ne buvez pas l'eau d'inondation — elle peut être contaminée",
+      "Suivez les instructions des autorités et les ordres d'évacuation",
+      "Prenez un sac d'urgence et les documents importants"
+    ],
+    "building_collapse": [
+      "Évacuez le bâtiment immédiatement si vous ressentez des vibrations ou entendez des bruits inhabituels",
+      "N'utilisez pas les ascenseurs — utilisez uniquement les escaliers",
+      "Protégez votre tête et votre cou avec vos mains ou un sac",
+      "Éloignez-vous du bâtiment à une distance sûre",
+      "N'entrez pas pour secourir quelqu'un — laissez cela aux professionnels",
+      "Appelez les services d'urgence immédiatement",
+      "Prévenez les autres de ne pas s'approcher du bâtiment"
+    ],
+    "electrical_accident": [
+      "Ne touchez pas directement la personne blessée — vous pourriez être électrocuté aussi",
+      "Coupez l'électricité au disjoncteur principal",
+      "Utilisez un bâton en bois sec pour éloigner le fil de la victime",
+      "Tenez-vous sur une surface sèche isolante (caoutchouc, bois)",
+      "N'utilisez pas d'eau pour éteindre un feu électrique",
+      "Appelez une ambulance immédiatement",
+      "Commencez la RCP si la respiration s'est arrêtée"
+    ],
+    "injuries": [
+      "Évaluez la situation et assurez-vous que la zone est sûre avant d'approcher",
+      "Appelez une ambulance pour les blessures graves",
+      "Ne déplacez pas la personne blessée si une blessure de la colonne vertébrale est suspectée",
+      "Exercez une pression directe sur les plaies hémorragiques avec un tissu propre",
+      "Gardez la personne blessée au chaud et confortable",
+      "Immobilisez les fractures avant de bouger",
+      "Surveillez les signes vitaux jusqu'à l'arrivée des secours"
+    ],
+    "drowning": [
+      "Appelez une ambulance immédiatement",
+      "Sortez la personne de l'eau en toute sécurité — tendez-lui un bâton ou une corde",
+      "Ne sautez pas pour secourir à moins d'être formé",
+      "Vérifiez la respiration et le pouls dès qu'elle est sortie",
+      "Commencez la RCP si elle ne respire pas",
+      "Placez la personne sur le côté si elle respire mais est inconsciente",
+      "Maintenez la victime au chaud avec des couvertures"
+    ],
+    "poisoning": [
+      "Appelez le centre antipoison ou les services d'urgence immédiatement",
+      "Identifiez la substance et la quantité approximative si possible",
+      "Ne provoquez pas le vomissement sans avis médical",
+      "Éloignez la personne de la source d'intoxication",
+      "Si l'intoxication est par inhalation, mettez la personne à l'air libre",
+      "Conservez un échantillon de la substance suspectée",
+      "Surveillez la respiration et la conscience jusqu'à l'arrivée des secours"
+    ],
+    "choking": [
+      "Demandez à la personne : « Êtes-vous étouffé ? ». Si elle hoche la tête, aidez-la immédiatement",
+      "Tenez-vous derrière la personne et placez votre poing au-dessus du nombril",
+      "Effectuez des poussées abdominales fermes et rapides vers l'intérieur et le haut (méthode de Heimlich)",
+      "Répétez jusqu'à 5 fois ou jusqu'à ce que l'objet voie expulsé",
+      "Pour les nourrissons : placez-les face vers le bas et donnez 5 tapes dans le dos",
+      "Si la personne est inconsciente, commencez la RCP",
+      "Appelez les services d'urgence immédiatement"
+    ]
+  }
+}
