@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/custom_bottom_navbar.dart';
+import '../../ui/widgets/custom_bottom_navbar.dart';
 
 
 class SafetyDetailScreen extends StatelessWidget {

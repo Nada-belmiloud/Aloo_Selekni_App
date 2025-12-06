@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../widgets/custom_bottom_navbar.dart';
-import '../widgets/accident_card.dart'; // <-- import new widget
+import '../../ui/widgets/custom_bottom_navbar.dart';
+import '../../ui/widgets/accident_card.dart'; // <-- import new widget
 
 class SafetyInstructionsScreen extends StatelessWidget {
   const SafetyInstructionsScreen({Key? key}) : super(key: key);
