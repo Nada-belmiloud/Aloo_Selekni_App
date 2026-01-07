@@ -8,11 +8,10 @@ import '../widgets/page_header.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../l10n/app_localizations.dart';
 import '../../data/models/volunteer.dart';
-
+import '../widgets/bottom_navbar_wrapper.dart';
 
 class ExploreScreen extends StatelessWidget {
   final Volunteer volunteer;
-
   const ExploreScreen({Key? key, required this.volunteer}) : super(key: key);
 
   Future<void> _makeEmergencyCall(BuildContext context) async {
@@ -49,7 +48,8 @@ class ExploreScreen extends StatelessWidget {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                Image.asset('assets/images/explore back.jpg', fit: BoxFit.cover),
+                Image.asset('assets/images/explore back.jpg',
+                    fit: BoxFit.cover),
                 Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -149,11 +149,10 @@ class ExploreScreen extends StatelessWidget {
       ),
 
       // Bottom Navigation Bar
-      bottomNavigationBar: CustomBottomNavBar(
-        currentVolunteer: volunteer,
-        onEmergencyTap: () => _makeEmergencyCall(context),
+      bottomNavigationBar: BottomNavBarWrapper(
+        selectedIndex: 0, // change per page
+        volunteer: volunteer, // can be null if page doesn't have a volunteer
       ),
-      
     );
   }
 }

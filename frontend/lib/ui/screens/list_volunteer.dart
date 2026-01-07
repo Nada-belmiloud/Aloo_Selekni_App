@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import '../widgets/volunteer_card.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../widgets/custom_bottom_navbar.dart';
 import '../../l10n/app_localizations.dart';
 import '../../data/repositories/volunteers_repository.dart';
 import '../../data/models/volunteer.dart';
+import '../widgets/bottom_navbar_wrapper.dart';
 
 class VolunteerListScreen extends StatelessWidget {
   final Volunteer volunteer; // <-- add this
   final String? wilaya;
   final VolunteersRepository _repository = VolunteersRepository();
 
-  VolunteerListScreen({Key? key, required this.volunteer, this.wilaya}) : super(key: key);
+  VolunteerListScreen({Key? key, required this.volunteer, this.wilaya})
+      : super(key: key);
 
   Future<List<Volunteer>> _fetchVolunteers() async {
     List<Volunteer> allVolunteers = await _repository.getAllVolunteers();
@@ -41,7 +42,8 @@ class VolunteerListScreen extends StatelessWidget {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                Image.asset('assets/images/volunteer back.jpg', fit: BoxFit.cover),
+                Image.asset('assets/images/volunteer back.jpg',
+                    fit: BoxFit.cover),
                 Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -114,13 +116,12 @@ class VolunteerListScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final volunteerItem = volunteers[index];
                     return VolunteerCard(
-                                  imagePath: 'assets/images/user.png',
-                                  name: volunteerItem.name,
-                                  location: volunteerItem.wilaya ?? '',
-                                  phone: volunteerItem.phone,
-                                  onCall: () =>
-                                      makePhoneCall(volunteerItem.phone),
-                                );
+                      imagePath: 'assets/images/user.png',
+                      name: volunteerItem.name,
+                      location: volunteerItem.wilaya ?? '',
+                      phone: volunteerItem.phone,
+                      onCall: () => makePhoneCall(volunteerItem.phone),
+                    );
                   },
                 );
               },
@@ -128,23 +129,9 @@ class VolunteerListScreen extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: CustomBottomNavBar(
-        currentVolunteer: volunteer, // <-- use the passed volunteer
-        onEmergencyTap: () async {
-          final Uri phoneUri = Uri.parse('tel:14');
-          if (await canLaunchUrl(phoneUri)) {
-            await launchUrl(phoneUri, mode: LaunchMode.externalApplication);
-          } else {
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(localizations.cannotOpenPhoneApp),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            }
-          }
-        },
+      bottomNavigationBar: BottomNavBarWrapper(
+        selectedIndex: 0, // change per page
+        volunteer: volunteer, // can be null if page doesn't have a volunteer
       ),
     );
   }

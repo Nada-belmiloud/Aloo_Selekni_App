@@ -8,11 +8,13 @@ import '../widgets/page_header.dart';
 import '../../l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../data/models/volunteer.dart';
+import '../widgets/bottom_navbar_wrapper.dart'; 
 
 class RoleSelectionScreen extends StatelessWidget {
   final Volunteer volunteer; // <-- logged-in volunteer
 
-  const RoleSelectionScreen({Key? key, required this.volunteer}) : super(key: key);
+  const RoleSelectionScreen({Key? key, required this.volunteer})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +136,8 @@ class RoleSelectionScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ExploreScreen(volunteer: volunteer),
+                          builder: (context) =>
+                              ExploreScreen(volunteer: volunteer),
                         ),
                       );
                     },
@@ -146,17 +149,12 @@ class RoleSelectionScreen extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: CustomBottomNavBar(
+        selectedIndex: 1, // HOME
+        currentVolunteer: volunteer,
         onEmergencyTap: () async {
           final Uri phoneUri = Uri.parse('tel:14');
           if (await canLaunchUrl(phoneUri)) {
             await launchUrl(phoneUri, mode: LaunchMode.externalApplication);
-          } else if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(loc.cannotOpenPhoneApp),
-                backgroundColor: Colors.red,
-              ),
-            );
           }
         },
       ),

@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart'; 
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/custom_bottom_navbar.dart';
+import '../widgets/bottom_navbar_wrapper.dart'; 
+import '../../data/models/volunteer.dart';
 
 class VolunteerScreen extends StatelessWidget {
-  const VolunteerScreen({Key? key}) : super(key: key);
+  final Volunteer volunteer;
+  const VolunteerScreen({Key? key, required this.volunteer}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,25 +23,11 @@ class VolunteerScreen extends StatelessWidget {
           style: TextStyle(fontSize: 18),
         ),
       ),
-      bottomNavigationBar: CustomBottomNavBar(
-          onEmergencyTap: () async {
-            // Make emergency call to 14
-            final Uri phoneUri = Uri.parse('tel:14');
-            if (await canLaunchUrl(phoneUri)) {
-              await launchUrl(phoneUri, mode: LaunchMode.externalApplication);
-            } else {
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content:
-                        Text(AppLocalizations.of(context)!.cannotOpenPhoneApp),
-                    backgroundColor: Colors.red,
-                  ),
-                );
-              }
-            }
-          },
-        ),
+      bottomNavigationBar: BottomNavBarWrapper(
+  selectedIndex: 0, // change per page
+  volunteer: volunteer, // can be null if page doesn't have a volunteer
+),
+
     );
   }
 }

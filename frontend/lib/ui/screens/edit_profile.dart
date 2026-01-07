@@ -3,10 +3,10 @@ import 'package:url_launcher/url_launcher.dart';
 import '../widgets/custom_bottom_navbar.dart';
 import '../../l10n/app_localizations.dart';
 import '../../data/models/volunteer.dart';
+import '../widgets/bottom_navbar_wrapper.dart';
 
 class ProfileEditPage extends StatefulWidget {
-  final Volunteer volunteer; // ✅ Required
-
+  final Volunteer volunteer;
   const ProfileEditPage({Key? key, required this.volunteer}) : super(key: key);
 
   @override
@@ -256,22 +256,9 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
             ),
           ),
         ),
-        bottomNavigationBar: CustomBottomNavBar(
-          currentVolunteer: widget.volunteer, // ✅ Pass volunteer here
-          onEmergencyTap: () async {
-            final Uri phoneUri = Uri.parse('tel:14');
-            if (await canLaunchUrl(phoneUri)) {
-              await launchUrl(phoneUri, mode: LaunchMode.externalApplication);
-            } else {
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                      content: Text(t.cannotOpenPhoneApp),
-                      backgroundColor: Colors.red),
-                );
-              }
-            }
-          },
+        bottomNavigationBar: BottomNavBarWrapper(
+          selectedIndex: 0, // change per page
+          volunteer: widget.volunteer, // can be null if page doesn't have a volunteer
         ),
       ),
     );

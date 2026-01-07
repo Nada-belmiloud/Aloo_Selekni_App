@@ -6,7 +6,7 @@ import '../../l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/custom_bottom_navbar.dart';
 import '../../data/models/volunteer.dart';
-import '../../data/repositories/volunteers_repository.dart';
+import '../../data/repositories/volunteers_repository.dart'; 
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -40,10 +40,10 @@ class _LoginScreenState extends State<LoginScreen> {
   void _handleLogin() async {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
-      
+
       try {
         final volunteersRepo = VolunteersRepository();
-        
+
         // 1. Fetch local data first (for speed/validation)
         Volunteer? myVolunteer =
             await volunteersRepo.getVolunteerByEmail(_emailController.text);
@@ -52,7 +52,8 @@ class _LoginScreenState extends State<LoginScreen> {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(AppLocalizations.of(context)!.loginEmailPhoneError),
+                content:
+                    Text(AppLocalizations.of(context)!.loginEmailPhoneError),
                 backgroundColor: Colors.red,
               ),
             );
@@ -63,8 +64,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
         // 2. ✅ FETCH FULL PROFILE FROM CLOUD
         // This retrieves the certificateBase64 string which isn't in SQLite
-        final cloudVolunteer = await volunteersRepo.getFullVolunteerFromCloud(myVolunteer.id);
-        
+        final cloudVolunteer =
+            await volunteersRepo.getFullVolunteerFromCloud(myVolunteer.id);
+
         // If we found the cloud version, use it so the profile has the image
         if (cloudVolunteer != null) {
           myVolunteer = cloudVolunteer;
@@ -163,8 +165,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide.none,
                     ),
-                    prefixIcon: const Icon(Icons.person_outline, color: Colors.grey),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    prefixIcon:
+                        const Icon(Icons.person_outline, color: Colors.grey),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 16),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -188,17 +192,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide.none,
                     ),
-                    prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
+                    prefixIcon:
+                        const Icon(Icons.lock_outline, color: Colors.grey),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                        _obscurePassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
                         color: Colors.grey,
                       ),
-                      onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                      onPressed: () =>
+                          setState(() => _obscurePassword = !_obscurePassword),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 16),
                   ),
-                  validator: (value) => value == null || value.isEmpty ? t.loginPasswordError : null,
+                  validator: (value) => value == null || value.isEmpty
+                      ? t.loginPasswordError
+                      : null,
                 ),
 
                 const SizedBox(height: 32),
@@ -209,34 +220,35 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFF6B6B),
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
                     elevation: 0,
                   ),
-                  child: _isLoading 
-                    ? const SizedBox(
-                        height: 20, 
-                        width: 20, 
-                        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
-                      )
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.arrow_back, color: Colors.white),
-                          const SizedBox(width: 8),
-                          Text(
-                            t.loginButton,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                  child: _isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                              color: Colors.white, strokeWidth: 2))
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.arrow_back, color: Colors.white),
+                            const SizedBox(width: 8),
+                            Text(
+                              t.loginButton,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
                 ),
 
                 const SizedBox(height: 16),
-                
+
                 // Optional: Link to register
                 TextButton(
                   onPressed: _navigateToRegister,
@@ -248,6 +260,8 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
       bottomNavigationBar: CustomBottomNavBar(
+        selectedIndex: 0,
+        currentVolunteer: null,
         onEmergencyTap: () async {
           final Uri phoneUri = Uri.parse('tel:14');
           if (await canLaunchUrl(phoneUri)) {

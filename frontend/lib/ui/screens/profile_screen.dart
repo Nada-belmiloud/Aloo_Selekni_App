@@ -10,10 +10,10 @@ import 'settings.dart';
 import 'terms_conditions.dart';
 import 'login_screen.dart';
 import '../widgets/custom_bottom_navbar.dart';
+import '../widgets/bottom_navbar_wrapper.dart'; 
 
 class ProfilePage extends StatefulWidget {
-  final Volunteer volunteer;
-
+  final Volunteer volunteer; // <-- you need this
   const ProfilePage({Key? key, required this.volunteer}) : super(key: key);
 
   @override
@@ -58,8 +58,14 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
       bottomNavigationBar: CustomBottomNavBar(
-        currentVolunteer: widget.volunteer,
-        onEmergencyTap: _makeEmergencyCall,
+        selectedIndex: 0, // PROFILE
+        currentVolunteer: widget.volunteer, 
+        onEmergencyTap: () async {
+          final Uri phoneUri = Uri.parse('tel:14');
+          if (await canLaunchUrl(phoneUri)) {
+            await launchUrl(phoneUri, mode: LaunchMode.externalApplication);
+          }
+        },
       ),
     );
   }
@@ -107,8 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           const SizedBox(height: 16),
           Text(
-            AppLocalizations.of(context)!
-                .welcomeMessage(widget.volunteer.name),
+            AppLocalizations.of(context)!.welcomeMessage(widget.volunteer.name),
             style: const TextStyle(
               fontSize: 26,
               fontWeight: FontWeight.bold,
@@ -191,7 +196,7 @@ class _ProfilePageState extends State<ProfilePage> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const PrivacyPolicyPage()),
+                MaterialPageRoute(builder: (_) => PrivacyPolicyPage( volunteer: widget.volunteer,)),
               );
             },
           ),

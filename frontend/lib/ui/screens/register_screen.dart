@@ -11,6 +11,7 @@ import '../widgets/custom_bottom_navbar.dart';
 import '../../logic/states/volunteer_registration_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
+import '../widgets/bottom_navbar_wrapper.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -31,7 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String? _selectedGender;
   bool _acceptTerms = false;
   File? _certificateFile;
-String? _certificateName;
+  String? _certificateName;
   final ImagePicker _picker = ImagePicker();
 
   final List<String> _genders = ['ذكر', 'أنثى'];
@@ -62,20 +63,20 @@ String? _certificateName;
                   final XFile? image =
                       await _picker.pickImage(source: ImageSource.gallery);
                   if (image != null) {
-  setState(() {
-    _certificateFile = File(image.path);
-    _certificateName = image.name;
-  });
+                    setState(() {
+                      _certificateFile = File(image.path);
+                      _certificateName = image.name;
+                    });
 
-  if (mounted) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('${loc.fileUploaded}: ${image.name}'),
-        backgroundColor: Colors.green,
-      ),
-    );
-  }
-}
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('${loc.fileUploaded}: ${image.name}'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                    }
+                  }
                 },
               ),
               ListTile(
@@ -85,21 +86,21 @@ String? _certificateName;
                   Navigator.pop(context);
                   final XFile? image =
                       await _picker.pickImage(source: ImageSource.camera);
-                 if (image != null) {
-  setState(() {
-    _certificateFile = File(image.path);
-    _certificateName = image.name;
-  });
+                  if (image != null) {
+                    setState(() {
+                      _certificateFile = File(image.path);
+                      _certificateName = image.name;
+                    });
 
-  if (mounted) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('${loc.fileUploaded}: ${image.name}'),
-        backgroundColor: Colors.green,
-      ),
-    );
-  }
-}
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('${loc.fileUploaded}: ${image.name}'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                    }
+                  }
                 },
               ),
             ],
@@ -135,16 +136,15 @@ String? _certificateName;
       }
 
       cubit.registerVolunteer(
-  name: _nameController.text,
-  phone: _phoneController.text,
-  email: _emailController.text,
-  password: _passwordController.text, // ✅ ADD THIS
-  address: _addressController.text,
-  wilaya: _selectedState!,
-  gender: _selectedGender!,
- certificateFile: _certificateFile!,
-);
-
+        name: _nameController.text,
+        phone: _phoneController.text,
+        email: _emailController.text,
+        password: _passwordController.text, // ✅ ADD THIS
+        address: _addressController.text,
+        wilaya: _selectedState!,
+        gender: _selectedGender!,
+        certificateFile: _certificateFile!,
+      );
     }
   }
 
@@ -221,21 +221,30 @@ String? _certificateName;
         if (state.status == RegistrationStatus.success &&
             state.registeredVolunteer != null) {
           final prefs = await SharedPreferences.getInstance();
-          await prefs.setString(
-              'currentVolunteerId', state.registeredVolunteer!.id);
 
+          final v = state.registeredVolunteer!;
+
+          // Store all necessary fields
+          await prefs.setString('currentVolunteerId', v.id);
+          await prefs.setString('currentVolunteerName', v.name);
+          await prefs.setString('currentVolunteerPhone', v.phone);
+          await prefs.setString('currentVolunteerEmail', v.email);
+          await prefs.setBool('currentVolunteerAvailability', v.availability);
+
+          // Show success
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(state.successMessage ?? loc.registerSuccess),
+              content: Text(state.successMessage ??
+                  AppLocalizations.of(context)!.registerSuccess),
               backgroundColor: Colors.green,
             ),
           );
 
+          // Navigate to profile
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (_) =>
-                  ProfilePage(volunteer: state.registeredVolunteer!),
+              builder: (_) => ProfilePage(volunteer: v),
             ),
           );
         } else if (state.status == RegistrationStatus.error) {
@@ -554,7 +563,7 @@ String? _certificateName;
                           ),
                           Expanded(
                             child: Text(
-                              _certificateName  ?? loc.uploadCertificateHint,
+                              _certificateName ?? loc.uploadCertificateHint,
                               style: TextStyle(
                                 color: _certificateFile != null
                                     ? Colors.green
@@ -665,21 +674,12 @@ String? _certificateName;
           ),
         ),
         bottomNavigationBar: CustomBottomNavBar(
+          selectedIndex: 0,
           currentVolunteer: null,
           onEmergencyTap: () async {
             final Uri phoneUri = Uri.parse('tel:14');
             if (await canLaunchUrl(phoneUri)) {
               await launchUrl(phoneUri, mode: LaunchMode.externalApplication);
-            } else {
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content:
-                        Text(AppLocalizations.of(context)!.cannotOpenPhoneApp),
-                    backgroundColor: Colors.red,
-                  ),
-                );
-              }
             }
           },
         ),

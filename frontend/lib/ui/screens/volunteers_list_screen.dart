@@ -8,6 +8,7 @@ import 'safety_instruction_screen.dart';
 import '../../l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../data/models/volunteer.dart';
+import '../widgets/bottom_navbar_wrapper.dart'; 
 
 
 class NearestVolunteersScreen extends StatefulWidget {
@@ -231,22 +232,10 @@ class _NearestVolunteersScreenState extends State<NearestVolunteersScreen> {
           ),
         ],
       ),
-      bottomNavigationBar:
-          CustomBottomNavBar(currentVolunteer: widget.volunteer, onEmergencyTap: () async {
-        final Uri phoneUri = Uri.parse('tel:14');
-        if (await canLaunchUrl(phoneUri)) {
-          await launchUrl(phoneUri, mode: LaunchMode.externalApplication);
-        } else {
-          if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(loc.cannotOpenPhoneApp),
-                backgroundColor: Colors.red,
-              ),
-            );
-          }
-        }
-      }),
+     bottomNavigationBar: BottomNavBarWrapper(
+  selectedIndex: 0, // change per page
+  volunteer: widget.volunteer, // can be null if page doesn't have a volunteer
+),
     );
   }
 

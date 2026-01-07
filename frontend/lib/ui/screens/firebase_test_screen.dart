@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../widgets/bottom_navbar_wrapper.dart'; 
 
 class FirebaseTestScreen extends StatefulWidget {
   const FirebaseTestScreen({Key? key}) : super(key: key);

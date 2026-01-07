@@ -9,6 +9,7 @@ import 'volunteers_list_screen.dart';
 import '../widgets/custom_bottom_navbar.dart';
 import '../../data/models/volunteer.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../widgets/bottom_navbar_wrapper.dart'; 
 
 class NeedHelpScreen extends StatelessWidget {
   final Volunteer volunteer; // <-- required logged-in volunteer
@@ -222,26 +223,11 @@ class _NeedHelpViewState extends State<NeedHelpView> {
           );
         },
       ),
-      bottomNavigationBar: CustomBottomNavBar(
-        currentVolunteer: widget.volunteer,
-        onEmergencyTap: () async {
-          // Make emergency call to 14
-          final Uri phoneUri = Uri.parse('tel:14');
-          if (await canLaunchUrl(phoneUri)) {
-            await launchUrl(phoneUri, mode: LaunchMode.externalApplication);
-          } else {
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content:
-                      Text(AppLocalizations.of(context)!.cannotOpenPhoneApp),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            }
-          }
-        },
-      ),
+      bottomNavigationBar: BottomNavBarWrapper(
+  selectedIndex: 0, // change per page
+  volunteer: widget.volunteer, // can be null if page doesn't have a volunteer
+),
+
     );
   }
 

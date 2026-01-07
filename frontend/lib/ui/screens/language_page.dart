@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../widgets/custom_bottom_navbar.dart';
 import '../../main.dart';
 import '../../data/models/volunteer.dart';
+import '../widgets/bottom_navbar_wrapper.dart';
 
 class LanguagePage extends StatefulWidget {
   final Volunteer volunteer;
@@ -123,9 +124,10 @@ class _LanguagePageState extends State<LanguagePage> {
           const SizedBox(height: 20),
         ],
       ),
-      bottomNavigationBar: CustomBottomNavBar(
-        currentVolunteer: widget.volunteer, // Pass volunteer
-        onEmergencyTap: () => _makeEmergencyCall(context),
+      bottomNavigationBar: BottomNavBarWrapper(
+        selectedIndex: 0, // change per page
+        volunteer:
+            widget.volunteer, // can be null if page doesn't have a volunteer
       ),
     );
   }

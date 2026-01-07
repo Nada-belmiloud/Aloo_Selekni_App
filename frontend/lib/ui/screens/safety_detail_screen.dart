@@ -4,6 +4,7 @@ import '../widgets/page_header.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../l10n/app_localizations.dart';
 import '../../data/models/volunteer.dart';
+import '../widgets/bottom_navbar_wrapper.dart'; 
 
 class SafetyDetailScreen extends StatelessWidget {
   final Volunteer volunteer; // <-- pass the volunteer
@@ -143,24 +144,11 @@ class SafetyDetailScreen extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: CustomBottomNavBar(
-        currentVolunteer: volunteer, // <-- use the passed volunteer
-        onEmergencyTap: () async {
-          final Uri phoneUri = Uri.parse('tel:14');
-          if (await canLaunchUrl(phoneUri)) {
-            await launchUrl(phoneUri, mode: LaunchMode.externalApplication);
-          } else {
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(AppLocalizations.of(context)!.cannotOpenPhoneApp),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            }
-          }
-        },
-      ),
+      bottomNavigationBar: BottomNavBarWrapper(
+  selectedIndex: 0, // change per page
+  volunteer: volunteer, // can be null if page doesn't have a volunteer
+),
+
     );
   }
 

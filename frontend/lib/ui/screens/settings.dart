@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import '../widgets/bottom_navbar_wrapper.dart'; 
 import '../../l10n/app_localizations.dart';
 import '../../data/models/volunteer.dart';
 import '../widgets/custom_bottom_navbar.dart';
@@ -174,25 +174,11 @@ class SettingsPage extends StatelessWidget {
           },
         ),
       ),
-      bottomNavigationBar: CustomBottomNavBar(
-        currentVolunteer: volunteer,
-        onEmergencyTap: () async {
-          final Uri phoneUri = Uri.parse('tel:14');
+      bottomNavigationBar: BottomNavBarWrapper(
+  selectedIndex: 0, // change per page
+  volunteer: volunteer, // can be null if page doesn't have a volunteer
+),
 
-          if (await canLaunchUrl(phoneUri)) {
-            await launchUrl(phoneUri, mode: LaunchMode.externalApplication);
-          } else if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  AppLocalizations.of(context)!.cannotOpenPhoneApp,
-                ),
-                backgroundColor: Colors.red,
-              ),
-            );
-          }
-        },
-      ),
     );
   }
 }
