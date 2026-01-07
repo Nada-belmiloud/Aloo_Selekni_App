@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "475175597982",
+    "project_id": "allo-selekni-app",
+    "storage_bucket": "allo-selekni-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:475175597982:android:5ad114881c0ed2cd5d488f",
+        "android_client_info": {
+          "package_name": "com.example.page1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJl4zlKfK9cLWEkL5k-Vz3xYKgd_OsRV4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

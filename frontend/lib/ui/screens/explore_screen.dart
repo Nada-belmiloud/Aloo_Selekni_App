@@ -9,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../l10n/app_localizations.dart';
 import '../../data/models/volunteer.dart';
 
+
 class ExploreScreen extends StatelessWidget {
   final Volunteer volunteer;
 
@@ -152,6 +153,7 @@ class ExploreScreen extends StatelessWidget {
         currentVolunteer: volunteer,
         onEmergencyTap: () => _makeEmergencyCall(context),
       ),
+      
     );
   }
 }

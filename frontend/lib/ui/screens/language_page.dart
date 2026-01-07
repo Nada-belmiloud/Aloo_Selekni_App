@@ -6,7 +6,7 @@ import '../../main.dart';
 import '../../data/models/volunteer.dart';
 
 class LanguagePage extends StatefulWidget {
-  final Volunteer volunteer; // ✅ Must pass current volunteer
+  final Volunteer volunteer;
 
   const LanguagePage({Key? key, required this.volunteer}) : super(key: key);
 
@@ -124,7 +124,7 @@ class _LanguagePageState extends State<LanguagePage> {
         ],
       ),
       bottomNavigationBar: CustomBottomNavBar(
-        currentVolunteer: widget.volunteer, // ✅ Pass volunteer
+        currentVolunteer: widget.volunteer, // Pass volunteer
         onEmergencyTap: () => _makeEmergencyCall(context),
       ),
     );

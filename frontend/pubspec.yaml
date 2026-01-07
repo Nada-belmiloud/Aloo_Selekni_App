@@ -22,7 +22,20 @@ dependencies:
   shared_preferences: ^2.2.2
   sqflite: ^2.3.0
   path: ^1.9.0
+  
+  # Firebase - UPDATED VERSIONS
+  firebase_core: ^3.8.1
+  firebase_auth: ^5.3.3
+  cloud_firestore: ^5.5.2
+  firebase_storage: ^12.3.7
+  
+ 
 
+  # Background tasks (later)
+  workmanager: ^0.6.0
+  firebase_messaging: ^15.2.10
+  flutter_local_notifications: ^19.5.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -44,9 +57,6 @@ flutter:
         - asset: fonts/Tajawal-Bold.ttf
           weight: 700
 
-# ------------------------------
-# 👇 THIS MUST BE OUTSIDE flutter:
-# ------------------------------
 gen_l10n:
   arb-dir: lib/l10n
   template-arb-file: app_en.arb

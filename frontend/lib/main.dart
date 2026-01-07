@@ -2,29 +2,54 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
 
+// Services and Data
+import 'data/services/firebase_sync_service.dart';
+import 'data/services/database_helper.dart';
+import 'data/repositories/volunteers_repository.dart';
+import 'data/models/volunteer.dart';
+import 'firebase_options.dart';
+
+// Logic
+import 'logic/cubit/volunteers_cubit.dart';
+import 'logic/cubit/volunteer_registration_cubit.dart';
+
+// UI
 import 'l10n/app_localizations.dart';
 import 'ui/screens/emergency_button_screen.dart';
 import 'ui/screens/profile_screen.dart';
 import 'ui/screens/role_selection_screen.dart';
 import 'ui/screens/register_screen.dart';
-import 'logic/cubit/volunteers_cubit.dart';
-import 'logic/cubit/volunteer_registration_cubit.dart';
-import 'data/repositories/volunteers_repository.dart';
-import 'data/services/database_helper.dart';
-import 'data/models/volunteer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize database
+  // 1. Initialize local database
   await DatabaseHelper.instance.database;
 
+  // 2. Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // 3. Perform Initial Global Sync
+  // We push local changes UP and pull cloud changes DOWN
+  try {
+    print('🔄 Initializing Global Sync...');
+    await FirebaseSyncService.instance.syncOnStartup(); // Upload local
+    await FirebaseSyncService.instance.pullVolunteersFromCloud(); // Download others
+    print('✅ Global startup sync completed');
+  } catch (e) {
+    print('⚠️ Startup sync failed: $e');
+  }
+
+  // 4. Setup Repositories and User Sessions
   final volunteersRepository = VolunteersRepository();
   final prefs = await SharedPreferences.getInstance();
   final savedVolunteerId = prefs.getString('currentVolunteerId');
 
-  // Load saved volunteer from DB if exists
+  // Load saved volunteer from SQLite if it exists
   Volunteer? currentVolunteer;
   if (savedVolunteerId != null) {
     final db = await DatabaseHelper.instance.database;
@@ -51,7 +76,8 @@ Future<void> main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => VolunteersCubit(volunteersRepository: volunteersRepository),
+          // We call loadAllVolunteers immediately so the UI populates
+          create: (_) => VolunteersCubit(volunteersRepository: volunteersRepository)..loadAllVolunteers(),
         ),
         BlocProvider(
           create: (_) => VolunteerRegistrationCubit(volunteersRepository: volunteersRepository),
@@ -70,17 +96,15 @@ class EmergencyApp extends StatefulWidget {
   @override
   State<EmergencyApp> createState() => _EmergencyAppState();
 
-  // Access state from context if needed
   static _EmergencyAppState? of(BuildContext context) =>
       context.findAncestorStateOfType<_EmergencyAppState>();
 }
 
 class _EmergencyAppState extends State<EmergencyApp> {
-  Locale _locale = const Locale('ar'); // default locale
+  Locale _locale = const Locale('ar'); // Default to Arabic
 
   Locale get locale => _locale;
 
-  // Method to update locale dynamically
   void setLocale(Locale locale) {
     setState(() {
       _locale = locale;
@@ -104,6 +128,7 @@ class _EmergencyAppState extends State<EmergencyApp> {
       ],
       supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
+      // Pass the current user session to the home screen
       home: EmergencyButtonScreen(currentVolunteer: widget.currentVolunteer),
       routes: {
         '/roleSelection': (context) => RoleSelectionScreen(volunteer: widget.currentVolunteer),

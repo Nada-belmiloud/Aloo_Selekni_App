@@ -20,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _isLoading = false; // Added to show progress during cloud fetch
 
   @override
   void dispose() {
@@ -35,45 +36,68 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  // ================= UPDATED LOGIN LOGIC =================
   void _handleLogin() async {
     if (_formKey.currentState!.validate()) {
+      setState(() => _isLoading = true);
+      
       try {
         final volunteersRepo = VolunteersRepository();
+        
+        // 1. Fetch local data first (for speed/validation)
         Volunteer? myVolunteer =
             await volunteersRepo.getVolunteerByEmail(_emailController.text);
 
         if (myVolunteer == null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context)!.loginEmailPhoneError),
-              backgroundColor: Colors.red,
-            ),
-          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(AppLocalizations.of(context)!.loginEmailPhoneError),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+          setState(() => _isLoading = false);
           return;
         }
 
-        // Success
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.loginSuccess),
-            backgroundColor: Colors.green,
-          ),
-        );
+        // 2. ✅ FETCH FULL PROFILE FROM CLOUD
+        // This retrieves the certificateBase64 string which isn't in SQLite
+        final cloudVolunteer = await volunteersRepo.getFullVolunteerFromCloud(myVolunteer.id);
+        
+        // If we found the cloud version, use it so the profile has the image
+        if (cloudVolunteer != null) {
+          myVolunteer = cloudVolunteer;
+        }
 
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProfilePage(volunteer: myVolunteer),
-          ),
-        );
+        // 3. Success
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.loginSuccess),
+              backgroundColor: Colors.green,
+            ),
+          );
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProfilePage(volunteer: myVolunteer!),
+            ),
+          );
+        }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-                "${AppLocalizations.of(context)!.errorOccurred}: ${e.toString()}"),
-            backgroundColor: Colors.red,
-          ),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                  "${AppLocalizations.of(context)!.errorOccurred}: ${e.toString()}"),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } finally {
+        if (mounted) setState(() => _isLoading = false);
       }
     }
   }
@@ -84,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const PageHeader(), // ✅ ADDED HEADER
+      appBar: const PageHeader(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -93,7 +117,6 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Volunteer image
                 Center(
                   child: Image.asset(
                     'assets/volunteer.jpg',
@@ -117,7 +140,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 40),
 
-                // Title
                 Text(
                   t.loginTitle,
                   style: const TextStyle(
@@ -130,7 +152,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 40),
 
-                // Email or phone
                 TextFormField(
                   controller: _emailController,
                   textAlign: TextAlign.start,
@@ -142,10 +163,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide.none,
                     ),
-                    prefixIcon:
-                        const Icon(Icons.person_outline, color: Colors.grey),
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 16),
+                    prefixIcon: const Icon(Icons.person_outline, color: Colors.grey),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -157,7 +176,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 16),
 
-                // Password
                 TextFormField(
                   controller: _passwordController,
                   obscureText: _obscurePassword,
@@ -170,60 +188,60 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide.none,
                     ),
-                    prefixIcon:
-                        const Icon(Icons.lock_outline, color: Colors.grey),
+                    prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword
-                            ? Icons.visibility_off
-                            : Icons.visibility,
+                        _obscurePassword ? Icons.visibility_off : Icons.visibility,
                         color: Colors.grey,
                       ),
-                      onPressed: () {
-                        setState(() {
-                          _obscurePassword = !_obscurePassword;
-                        });
-                      },
+                      onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 16),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   ),
-                  validator: (value) => value == null || value.isEmpty
-                      ? t.loginPasswordError
-                      : null,
+                  validator: (value) => value == null || value.isEmpty ? t.loginPasswordError : null,
                 ),
 
                 const SizedBox(height: 32),
 
-                // Login button
+                // Updated Button to show Loading state
                 ElevatedButton(
-                  onPressed: _handleLogin,
+                  onPressed: _isLoading ? null : _handleLogin,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFF6B6B),
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     elevation: 0,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.arrow_back, color: Colors.white),
-                      const SizedBox(width: 8),
-                      Text(
-                        t.loginButton,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                  child: _isLoading 
+                    ? const SizedBox(
+                        height: 20, 
+                        width: 20, 
+                        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.arrow_back, color: Colors.white),
+                          const SizedBox(width: 8),
+                          Text(
+                            t.loginButton,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
                 ),
 
                 const SizedBox(height: 16),
+                
+                // Optional: Link to register
+                TextButton(
+                  onPressed: _navigateToRegister,
+                  child: Text(t.registerTitle ?? "Register Now"),
+                ),
               ],
             ),
           ),
@@ -231,20 +249,9 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       bottomNavigationBar: CustomBottomNavBar(
         onEmergencyTap: () async {
-          // Make emergency call to 14
           final Uri phoneUri = Uri.parse('tel:14');
           if (await canLaunchUrl(phoneUri)) {
             await launchUrl(phoneUri, mode: LaunchMode.externalApplication);
-          } else {
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content:
-                      Text(AppLocalizations.of(context)!.cannotOpenPhoneApp),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            }
           }
         },
       ),
