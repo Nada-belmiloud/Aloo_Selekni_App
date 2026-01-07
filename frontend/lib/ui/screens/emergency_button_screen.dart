@@ -4,7 +4,8 @@ import 'role_selection_screen.dart';
 import '../widgets/settings_icon.dart';
 import '../../l10n/app_localizations.dart';
 import 'settings.dart';
-import '../../data/models/volunteer.dart'; // Import Volunteer model
+import '../../data/models/volunteer.dart';
+import 'firebase_test_screen.dart'; 
 
 class EmergencyButtonScreen extends StatelessWidget {
   final Volunteer currentVolunteer;
@@ -55,7 +56,7 @@ class EmergencyButtonScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  SettingsIcon(volunteer: currentVolunteer), // ✅ Pass volunteer
+                  SettingsIcon(volunteer: currentVolunteer), //  Pass volunteer
                 ],
               ),
               const SizedBox(height: 20),
@@ -162,6 +163,19 @@ class EmergencyButtonScreen extends StatelessWidget {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const FirebaseTestScreen(),
+            ),
+          );
+        },
+        backgroundColor: const Color(0xFF4A8BB3),
+        tooltip: 'Test Firebase Connection',
+        child: const Icon(Icons.cloud_done, color: Colors.white),
       ),
     );
   }

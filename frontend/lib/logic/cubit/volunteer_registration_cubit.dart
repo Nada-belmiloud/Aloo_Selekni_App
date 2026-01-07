@@ -1,125 +1,60 @@
-import 'package:bloc/bloc.dart';
-import 'package:uuid/uuid.dart';
-
+import 'dart:io';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/models/volunteer.dart';
 import '../../data/repositories/volunteers_repository.dart';
 import '../states/volunteer_registration_state.dart';
 
 class VolunteerRegistrationCubit extends Cubit<VolunteerRegistrationState> {
   final VolunteersRepository volunteersRepository;
-  final _uuid = const Uuid();
 
-  VolunteerRegistrationCubit({
-    required this.volunteersRepository,
-  }) : super(VolunteerRegistrationState.initial());
+  VolunteerRegistrationCubit({required this.volunteersRepository})
+      : super(VolunteerRegistrationState.initial());
 
-  /// Register a new volunteer
   Future<void> registerVolunteer({
     required String name,
     required String phone,
     required String email,
-    required String password, // ✅ ADDED
     required String address,
     required String wilaya,
     required String gender,
-    String? certificatePath,
+    required File certificateFile, 
+    required String password,
   }) async {
     emit(state.copyWith(status: RegistrationStatus.loading));
 
     try {
-      // ---------------- VALIDATION ----------------
-      if (name.isEmpty ||
-          phone.isEmpty ||
-          email.isEmpty ||
-          password.isEmpty ||
-          address.isEmpty) {
-        emit(state.copyWith(
-          status: RegistrationStatus.error,
-          errorMessage: 'جميع الحقول مطلوبة',
-        ));
-        return;
-      }
+      // 1. Create a Volunteer object
+      final String volunteerId = DateTime.now().millisecondsSinceEpoch.toString();
 
-      if (!email.contains('@')) {
-        emit(state.copyWith(
-          status: RegistrationStatus.error,
-          errorMessage: 'البريد الإلكتروني غير صحيح',
-        ));
-        return;
-      }
-
-      if (password.length < 6) {
-        emit(state.copyWith(
-          status: RegistrationStatus.error,
-          errorMessage: 'كلمة المرور قصيرة جداً',
-        ));
-        return;
-      }
-
-      if (certificatePath == null || certificatePath.isEmpty) {
-        emit(state.copyWith(
-          status: RegistrationStatus.error,
-          errorMessage: 'يجب تحميل شهادة الاعتماد',
-        ));
-        return;
-      }
-
-      // ---------------- CHECK PHONE ----------------
-      final exists = await checkPhoneExists(phone);
-      if (exists) {
-        emit(state.copyWith(
-          status: RegistrationStatus.error,
-          errorMessage: 'رقم الهاتف مستخدم مسبقاً',
-        ));
-        return;
-      }
-
-      // ---------------- CREATE VOLUNTEER ----------------
-      final volunteerId = _uuid.v4();
-
-      final volunteer = Volunteer(
+      final newVolunteer = Volunteer(
         id: volunteerId,
         name: name,
         phone: phone,
         email: email,
-        wilaya: wilaya,
         location: address,
-        commune: null,
-        skills: const ['إسعافات أولية'],
+        wilaya: wilaya,
         availability: true,
-        imagePath: 'assets/images/profile.png',
         createdAt: DateTime.now(),
-        // ⚠️ Password is NOT stored here unless your model supports it
       );
 
-      // ---------------- SAVE ----------------
-      await volunteersRepository.insertVolunteer(volunteer);
+      // 2. Call the repository (Uploads to Firestore & Saves to SQLite)
+      await volunteersRepository.registerVolunteerWithCertificate(
+        volunteer: newVolunteer,
+        certificateFile: certificateFile,
+      );
 
+      // ✅ FIXED: You must pass 'registeredVolunteer: newVolunteer' 
+      // otherwise the UI listener won't see the data to navigate!
       emit(state.copyWith(
         status: RegistrationStatus.success,
-        successMessage: 'تم التسجيل بنجاح! مرحباً بك في فريق المتطوعين',
-        registeredVolunteer: volunteer,
+        registeredVolunteer: newVolunteer, 
       ));
+      
     } catch (e) {
       emit(state.copyWith(
         status: RegistrationStatus.error,
-        errorMessage: 'حدث خطأ أثناء التسجيل: ${e.toString()}',
+        errorMessage: e.toString(),
       ));
-    }
-  }
-
-  /// Reset state
-  void reset() {
-    emit(VolunteerRegistrationState.initial());
-  }
-
-  /// Check if phone number already exists
-  Future<bool> checkPhoneExists(String phone) async {
-    try {
-      final volunteers = await volunteersRepository.getAllVolunteers();
-      return volunteers.any((v) => v.phone == phone);
-    } catch (_) {
-      return false;
     }
   }
 }

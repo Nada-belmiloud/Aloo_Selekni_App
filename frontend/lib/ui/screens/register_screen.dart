@@ -10,6 +10,7 @@ import '../widgets/page_header.dart';
 import '../widgets/custom_bottom_navbar.dart';
 import '../../logic/states/volunteer_registration_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -29,7 +30,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String? _selectedState;
   String? _selectedGender;
   bool _acceptTerms = false;
-  String? _uploadedFileName;
+  File? _certificateFile;
+String? _certificateName;
   final ImagePicker _picker = ImagePicker();
 
   final List<String> _genders = ['ذكر', 'أنثى'];
@@ -60,18 +62,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   final XFile? image =
                       await _picker.pickImage(source: ImageSource.gallery);
                   if (image != null) {
-                    setState(() {
-                      _uploadedFileName = image.name;
-                    });
-                    if (mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('${loc.fileUploaded}: ${image.name}'),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-                    }
-                  }
+  setState(() {
+    _certificateFile = File(image.path);
+    _certificateName = image.name;
+  });
+
+  if (mounted) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${loc.fileUploaded}: ${image.name}'),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+}
                 },
               ),
               ListTile(
@@ -81,19 +85,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Navigator.pop(context);
                   final XFile? image =
                       await _picker.pickImage(source: ImageSource.camera);
-                  if (image != null) {
-                    setState(() {
-                      _uploadedFileName = image.name;
-                    });
-                    if (mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('${loc.fileUploaded}: ${image.name}'),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-                    }
-                  }
+                 if (image != null) {
+  setState(() {
+    _certificateFile = File(image.path);
+    _certificateName = image.name;
+  });
+
+  if (mounted) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${loc.fileUploaded}: ${image.name}'),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+}
                 },
               ),
             ],
@@ -118,7 +124,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         return;
       }
 
-      if (_uploadedFileName == null) {
+      if (_certificateFile == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(loc.uploadCertificateWarning),
@@ -136,7 +142,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   address: _addressController.text,
   wilaya: _selectedState!,
   gender: _selectedGender!,
-  certificatePath: _uploadedFileName!,
+ certificateFile: _certificateFile!,
 );
 
     }
@@ -542,15 +548,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         children: [
                           Icon(
                             Icons.upload_file,
-                            color: _uploadedFileName != null
+                            color: _certificateFile != null
                                 ? Colors.green
                                 : Colors.grey,
                           ),
                           Expanded(
                             child: Text(
-                              _uploadedFileName ?? loc.uploadCertificateHint,
+                              _certificateName  ?? loc.uploadCertificateHint,
                               style: TextStyle(
-                                color: _uploadedFileName != null
+                                color: _certificateFile != null
                                     ? Colors.green
                                     : Colors.grey,
                               ),
