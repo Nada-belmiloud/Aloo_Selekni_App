@@ -8,8 +8,7 @@ import 'safety_instruction_screen.dart';
 import '../../l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../data/models/volunteer.dart';
-import '../widgets/bottom_navbar_wrapper.dart'; 
-
+import '../widgets/bottom_navbar_wrapper.dart';
 
 class NearestVolunteersScreen extends StatefulWidget {
   final String wilaya;
@@ -232,10 +231,11 @@ class _NearestVolunteersScreenState extends State<NearestVolunteersScreen> {
           ),
         ],
       ),
-     bottomNavigationBar: BottomNavBarWrapper(
-  selectedIndex: 0, // change per page
-  volunteer: widget.volunteer, // can be null if page doesn't have a volunteer
-),
+      bottomNavigationBar: BottomNavBarWrapper(
+        selectedIndex: 0, // change per page
+        volunteer:
+            widget.volunteer, // can be null if page doesn't have a volunteer
+      ),
     );
   }
 
@@ -247,6 +247,4 @@ class _NearestVolunteersScreenState extends State<NearestVolunteersScreen> {
       debugPrint('Cannot launch $phoneNumber');
     }
   }
-
-  
 }

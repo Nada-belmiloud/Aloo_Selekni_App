@@ -119,4 +119,40 @@ class Volunteer {
       createdAt: data['createdAt'] is Timestamp ? (data['createdAt'] as Timestamp).toDate() : null,
     );
   }
+
+  Volunteer copyWith({
+  String? id,
+  String? name,
+  String? phone,
+  String? email,
+  String? location,
+  String? wilaya,
+  String? commune,
+  List<String>? skills,
+  bool? availability,
+  String? imagePath,
+  String? certificateBase64,
+  String? certificateName,
+  bool? certificateVerified,
+  DateTime? createdAt,
+}) {
+  return Volunteer(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    phone: phone ?? this.phone,
+    email: email ?? this.email,
+    location: location ?? this.location,
+    wilaya: wilaya ?? this.wilaya,
+    commune: commune ?? this.commune,
+    skills: skills ?? this.skills,
+    availability: availability ?? this.availability,
+    imagePath: imagePath ?? this.imagePath,
+    certificateBase64: certificateBase64 ?? this.certificateBase64,
+    certificateName: certificateName ?? this.certificateName,
+    certificateVerified:
+        certificateVerified ?? this.certificateVerified,
+    createdAt: createdAt ?? this.createdAt,
+  );
+}
+
 }

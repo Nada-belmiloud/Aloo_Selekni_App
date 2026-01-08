@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../l10n/app_localizations.dart';
 import '../../data/models/volunteer.dart';
-
 import 'edit_profile.dart';
 import 'settings.dart';
 import 'terms_conditions.dart';
 import 'login_screen.dart';
 import '../widgets/custom_bottom_navbar.dart';
-import '../widgets/bottom_navbar_wrapper.dart'; 
+import '../widgets/bottom_navbar_wrapper.dart';
+import '../../data/volunteer_utils.dart';
+import '../../data/repositories/volunteers_repository.dart';
 
 class ProfilePage extends StatefulWidget {
-  final Volunteer volunteer; // <-- you need this
+  final Volunteer volunteer;
   const ProfilePage({Key? key, required this.volunteer}) : super(key: key);
 
   @override
@@ -22,23 +22,34 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   bool isAcceptable = false;
-  String volunteerStatus = "Available";
+  Volunteer? _volunteer;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _loadStatus();
+    _loadVolunteer();
   }
 
-  Future<void> _loadStatus() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      volunteerStatus = prefs.getString('volunteerStatus') ?? "Available";
-    });
+  // Load current volunteer from local storage or Firebase
+  Future<void> _loadVolunteer() async {
+    final v = await getCurrentVolunteer();
+    if (mounted) {
+      setState(() {
+        _volunteer = v ?? widget.volunteer; // fallback if null
+        _isLoading = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading || _volunteer == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -59,7 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       bottomNavigationBar: CustomBottomNavBar(
         selectedIndex: 0, // PROFILE
-        currentVolunteer: widget.volunteer, 
+        currentVolunteer: _volunteer!,
         onEmergencyTap: () async {
           final Uri phoneUri = Uri.parse('tel:14');
           if (await canLaunchUrl(phoneUri)) {
@@ -71,7 +82,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   // ================= HEADER =================
-
   Widget _buildHeader(BuildContext context) {
     return Container(
       width: double.infinity,
@@ -94,7 +104,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => SettingsPage(volunteer: widget.volunteer),
+                      builder: (_) => SettingsPage(volunteer: _volunteer!),
                     ),
                   );
                 },
@@ -113,7 +123,8 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           const SizedBox(height: 16),
           Text(
-            AppLocalizations.of(context)!.welcomeMessage(widget.volunteer.name),
+            AppLocalizations.of(context)!
+                .welcomeMessage(_volunteer!.name),
             style: const TextStyle(
               fontSize: 26,
               fontWeight: FontWeight.bold,
@@ -127,7 +138,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   // ================= ACCOUNT =================
-
   Widget _buildAccountSection(BuildContext context) {
     return _card(
       Column(
@@ -139,9 +149,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => ProfileEditPage(
-                    volunteer: widget.volunteer, // ✅ FIXED
-                  ),
+                  builder: (_) => ProfileEditPage(volunteer: _volunteer!),
                 ),
               );
             },
@@ -150,8 +158,10 @@ class _ProfilePageState extends State<ProfilePage> {
           _menuItem(
             icon: Icons.notifications_outlined,
             title: AppLocalizations.of(context)!.status,
-            subtitle: volunteerStatus,
-            subtitleColor: Colors.blue,
+            subtitle:
+                _volunteer!.availability ? "Available" : "Not Available",
+            subtitleColor:
+                _volunteer!.availability ? Colors.green : Colors.red,
             onTap: _changeStatus,
           ),
         ],
@@ -159,33 +169,43 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  // ================= CHANGE STATUS =================
   Future<void> _changeStatus() async {
-    final selected = await showDialog<String>(
+    final selected = await showDialog<bool>(
       context: context,
       builder: (_) => SimpleDialog(
         title: Text(AppLocalizations.of(context)!.status),
         children: [
           SimpleDialogOption(
-            onPressed: () => Navigator.pop(context, "Available"),
+            onPressed: () => Navigator.pop(context, true),
             child: const Text("Available"),
           ),
           SimpleDialogOption(
-            onPressed: () => Navigator.pop(context, "Not Available"),
+            onPressed: () => Navigator.pop(context, false),
             child: const Text("Not Available"),
           ),
         ],
       ),
     );
 
-    if (selected != null) {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('volunteerStatus', selected);
-      setState(() => volunteerStatus = selected);
-    }
+    if (selected == null) return;
+
+    // update in Firebase
+    final repo = VolunteersRepository();
+    await repo.updateVolunteerStatus(_volunteer!.id, selected);
+
+    // create updated Volunteer object using copyWith
+    final updatedVolunteer = _volunteer!.copyWith(availability: selected);
+
+    // save locally for next visit
+    await saveCurrentVolunteer(updatedVolunteer);
+
+    setState(() {
+      _volunteer = updatedVolunteer;
+    });
   }
 
   // ================= MORE =================
-
   Widget _buildMoreSection(BuildContext context) {
     return _card(
       Column(
@@ -196,7 +216,10 @@ class _ProfilePageState extends State<ProfilePage> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => PrivacyPolicyPage( volunteer: widget.volunteer,)),
+                MaterialPageRoute(
+                  builder: (_) =>
+                      PrivacyPolicyPage(volunteer: _volunteer!),
+                ),
               );
             },
           ),
@@ -212,7 +235,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   // ================= HELPERS =================
-
   Widget _card(Widget child) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -239,9 +261,8 @@ class _ProfilePageState extends State<ProfilePage> {
     return ListTile(
       leading: Icon(icon),
       title: Text(title),
-      subtitle: subtitle != null
-          ? Text(subtitle, style: TextStyle(color: subtitleColor))
-          : null,
+      subtitle:
+          subtitle != null ? Text(subtitle, style: TextStyle(color: subtitleColor)) : null,
       onTap: onTap,
     );
   }
@@ -255,11 +276,6 @@ class _ProfilePageState extends State<ProfilePage> {
         style: TextStyle(color: Colors.red[400]),
       ),
     );
-  }
-
-  Future<void> _makeEmergencyCall() async {
-    final uri = Uri.parse('tel:14');
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
   void _showLogoutDialog(BuildContext context) {
