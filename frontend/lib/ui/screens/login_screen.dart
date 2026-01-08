@@ -6,7 +6,8 @@ import '../../l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/custom_bottom_navbar.dart';
 import '../../data/models/volunteer.dart';
-import '../../data/repositories/volunteers_repository.dart'; 
+import '../../data/repositories/volunteers_repository.dart';
+import '../../data/volunteer_utils.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -80,6 +81,8 @@ class _LoginScreenState extends State<LoginScreen> {
               backgroundColor: Colors.green,
             ),
           );
+
+          await saveCurrentVolunteer(myVolunteer!);
 
           Navigator.pushReplacement(
             context,

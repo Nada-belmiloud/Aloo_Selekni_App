@@ -25,3 +25,14 @@ Future<Volunteer?> getCurrentVolunteer() async {
     availability: availability,
   );
 }
+
+
+Future<void> saveCurrentVolunteer(Volunteer volunteer) async {
+  final prefs = await SharedPreferences.getInstance();
+
+  await prefs.setString('currentVolunteerId', volunteer.id);
+  await prefs.setString('currentVolunteerName', volunteer.name);
+  await prefs.setString('currentVolunteerPhone', volunteer.phone);
+  await prefs.setString('currentVolunteerEmail', volunteer.email);
+  await prefs.setBool('currentVolunteerAvailability', volunteer.availability);
+}
