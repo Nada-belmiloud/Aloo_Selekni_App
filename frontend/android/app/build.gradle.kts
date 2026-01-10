@@ -2,11 +2,12 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("dev.flutter.flutter-gradle-plugin")
-    id("com.google.gms.google-services") // just this, no version here
+    id("com.google.gms.google-services") 
+    id("com.google.firebase.crashlytics")
+  
 }
 
-// Apply Crashlytics plugin separately
-apply(plugin = "com.google.firebase.crashlytics") // ✅ correct way in Kotlin DSL
+
 
 android {
     namespace = "com.example.page1"
