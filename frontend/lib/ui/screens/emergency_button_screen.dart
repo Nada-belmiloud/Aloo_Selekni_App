@@ -7,6 +7,8 @@ import 'settings.dart';
 import '../../data/models/volunteer.dart';
 import 'firebase_test_screen.dart'; 
 import '../widgets/bottom_navbar_wrapper.dart'; 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+
 
 class EmergencyButtonScreen extends StatelessWidget {
   final Volunteer currentVolunteer;

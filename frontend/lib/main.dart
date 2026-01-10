@@ -1,8 +1,12 @@
+import 'dart:ui'; // ✅ Add this at the top
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+
 
 // Services and Data
 import 'data/services/firebase_sync_service.dart';
@@ -21,6 +25,7 @@ import 'ui/screens/emergency_button_screen.dart';
 import 'ui/screens/profile_screen.dart';
 import 'ui/screens/role_selection_screen.dart';
 import 'ui/screens/register_screen.dart';
+import 'ui/screens/firebase_test_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,8 +38,17 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // 3. Perform Initial Global Sync
-  // We push local changes UP and pull cloud changes DOWN
+  // 3. Setup Crashlytics
+  // Pass all uncaught Flutter errors to Crashlytics
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+  // Pass all uncaught async errors to Crashlytics
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+
+  // 4. Perform Initial Global Sync
   try {
     print('🔄 Initializing Global Sync...');
     await FirebaseSyncService.instance.syncOnStartup(); // Upload local
@@ -44,7 +58,7 @@ Future<void> main() async {
     print('⚠️ Startup sync failed: $e');
   }
 
-  // 4. Setup Repositories and User Sessions
+  // 5. Setup Repositories and User Sessions
   final volunteersRepository = VolunteersRepository();
   final prefs = await SharedPreferences.getInstance();
   final savedVolunteerId = prefs.getString('currentVolunteerId');
@@ -72,12 +86,14 @@ Future<void> main() async {
     availability: false,
   );
 
+  // 6. Run App
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider(
-          // We call loadAllVolunteers immediately so the UI populates
-          create: (_) => VolunteersCubit(volunteersRepository: volunteersRepository)..loadAllVolunteers(),
+          create: (_) =>
+              VolunteersCubit(volunteersRepository: volunteersRepository)
+                ..loadAllVolunteers(),
         ),
         BlocProvider(
           create: (_) => VolunteerRegistrationCubit(volunteersRepository: volunteersRepository),
@@ -114,7 +130,7 @@ class _EmergencyAppState extends State<EmergencyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Emergency App',
+      title: 'Allo Selekni',
       theme: ThemeData(
         colorSchemeSeed: const Color(0xFF4A8BB3),
         useMaterial3: true,
@@ -128,12 +144,12 @@ class _EmergencyAppState extends State<EmergencyApp> {
       ],
       supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
-      // Pass the current user session to the home screen
       home: EmergencyButtonScreen(currentVolunteer: widget.currentVolunteer),
       routes: {
         '/roleSelection': (context) => RoleSelectionScreen(volunteer: widget.currentVolunteer),
         '/register': (context) => const RegisterScreen(),
         '/profile': (context) => ProfilePage(volunteer: widget.currentVolunteer),
+        '/firebaseTest': (context) => const FirebaseTestScreen(),
       },
     );
   }

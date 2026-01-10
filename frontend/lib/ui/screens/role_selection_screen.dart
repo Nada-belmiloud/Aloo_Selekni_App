@@ -9,6 +9,8 @@ import '../../l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../data/models/volunteer.dart';
 import '../widgets/bottom_navbar_wrapper.dart'; 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+
 
 class RoleSelectionScreen extends StatelessWidget {
   final Volunteer volunteer; // <-- logged-in volunteer
@@ -158,6 +160,15 @@ class RoleSelectionScreen extends StatelessWidget {
           }
         },
       ),
+      floatingActionButton: FloatingActionButton(
+    onPressed: () {
+      // Test Crashlytics
+      FirebaseCrashlytics.instance.crash(); // This will force a crash
+    },
+    backgroundColor: const Color(0xFF4A8BB3),
+    tooltip: 'Test Firebase Crashlytics',
+    child: const Icon(Icons.bug_report, color: Colors.white),
+  ),
     );
   }
 }
