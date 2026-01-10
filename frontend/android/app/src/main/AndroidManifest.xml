@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
 
     <!-- Queries for Android 11+ -->
     <queries>
@@ -39,6 +41,7 @@
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />
+            
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -46,6 +49,9 @@
             </intent-filter>
 
         </activity>
+        <meta-data
+        android:name="com.google.firebase.messaging.default_notification_channel_id"
+        android:value="high_importance_channel" />
 
         <!-- Flutter Plugin Registration -->
         <meta-data

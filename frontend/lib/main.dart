@@ -1,5 +1,4 @@
-import 'dart:ui'; // ✅ Add this at the top
-
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,13 +6,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
-
 // Services and Data
 import 'data/services/firebase_sync_service.dart';
 import 'data/services/database_helper.dart';
 import 'data/repositories/volunteers_repository.dart';
 import 'data/models/volunteer.dart';
 import 'firebase_options.dart';
+import 'data/services/notification.dart';
 
 // Logic
 import 'logic/cubit/volunteers_cubit.dart';
@@ -30,40 +29,36 @@ import 'ui/screens/firebase_test_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 1. Initialize local database
+  //  Initialize local database
   await DatabaseHelper.instance.database;
 
-  // 2. Initialize Firebase
+  //  Initialize Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // 3. Setup Crashlytics
-  // Pass all uncaught Flutter errors to Crashlytics
+  //  Setup Crashlytics
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-
-  // Pass all uncaught async errors to Crashlytics
   PlatformDispatcher.instance.onError = (error, stack) {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
 
-  // 4. Perform Initial Global Sync
+  // Perform Initial Global Sync
   try {
-    print('🔄 Initializing Global Sync...');
-    await FirebaseSyncService.instance.syncOnStartup(); // Upload local
-    await FirebaseSyncService.instance.pullVolunteersFromCloud(); // Download others
-    print('✅ Global startup sync completed');
+    print(' Initializing Global Sync...');
+    await FirebaseSyncService.instance.syncOnStartup();
+    await FirebaseSyncService.instance.pullVolunteersFromCloud();
+    print(' Global startup sync completed');
   } catch (e) {
-    print('⚠️ Startup sync failed: $e');
+    print(' Startup sync failed: $e');
   }
 
-  // 5. Setup Repositories and User Sessions
+  //  Setup Repositories and User Sessions
   final volunteersRepository = VolunteersRepository();
   final prefs = await SharedPreferences.getInstance();
   final savedVolunteerId = prefs.getString('currentVolunteerId');
 
-  // Load saved volunteer from SQLite if it exists
   Volunteer? currentVolunteer;
   if (savedVolunteerId != null) {
     final db = await DatabaseHelper.instance.database;
@@ -77,7 +72,7 @@ Future<void> main() async {
     }
   }
 
-  // Fallback guest volunteer if none exists
+  // Fallback guest volunteer
   currentVolunteer ??= Volunteer(
     id: '0',
     name: 'Guest',
@@ -86,7 +81,7 @@ Future<void> main() async {
     availability: false,
   );
 
-  // 6. Run App
+  //  Run App
   runApp(
     MultiBlocProvider(
       providers: [
@@ -96,7 +91,8 @@ Future<void> main() async {
                 ..loadAllVolunteers(),
         ),
         BlocProvider(
-          create: (_) => VolunteerRegistrationCubit(volunteersRepository: volunteersRepository),
+          create: (_) =>
+              VolunteerRegistrationCubit(volunteersRepository: volunteersRepository),
         ),
       ],
       child: EmergencyApp(currentVolunteer: currentVolunteer),
@@ -128,6 +124,14 @@ class _EmergencyAppState extends State<EmergencyApp> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    // Setup FCM notifications
+    NotificationService.setupFCM(context);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Allo Selekni',
@@ -146,9 +150,11 @@ class _EmergencyAppState extends State<EmergencyApp> {
       debugShowCheckedModeBanner: false,
       home: EmergencyButtonScreen(currentVolunteer: widget.currentVolunteer),
       routes: {
-        '/roleSelection': (context) => RoleSelectionScreen(volunteer: widget.currentVolunteer),
+        '/roleSelection': (context) =>
+            RoleSelectionScreen(volunteer: widget.currentVolunteer),
         '/register': (context) => const RegisterScreen(),
-        '/profile': (context) => ProfilePage(volunteer: widget.currentVolunteer),
+        '/profile': (context) =>
+            ProfilePage(volunteer: widget.currentVolunteer),
         '/firebaseTest': (context) => const FirebaseTestScreen(),
       },
     );
